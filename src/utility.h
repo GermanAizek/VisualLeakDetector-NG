@@ -97,7 +97,7 @@ struct context_t
 #endif // _M_IX86 || _M_X64
 
 // Miscellaneous definitions
-#define R2VA(moduleBase, rva)  (((PBYTE)moduleBase) + rva) // Relative Virtual Address to Virtual Address conversion.
+#define R2VA(moduleBase, rva)  (((PBYTE)moduleBase) + (rva)) // Relative Virtual Address to Virtual Address conversion.
 #define BYTEFORMATBUFFERLENGTH 4
 #define HEXDUMPLINELENGTH      58
 
