@@ -2062,8 +2062,8 @@ BOOL VisualLeakDetector::addLoadedModule (PCWSTR modulepath, DWORD64 modulebase,
     moduleinfo.addrLow  = (UINT_PTR)modulebase;
     moduleinfo.addrHigh = (UINT_PTR)(modulebase + modulesize) - 1;
     moduleinfo.flags    = 0x0;
-    moduleinfo.name     = modulename;
-    moduleinfo.path     = modulepathw;
+    moduleinfo.name     = std::move(modulename);
+    moduleinfo.path     = std::move(modulepathw);
 
     ModuleSet*    newmodules = (ModuleSet*)context;
     newmodules->insert(moduleinfo);
