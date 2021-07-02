@@ -562,7 +562,7 @@ BOOL PatchImport (HMODULE importmodule, moduleentry_t *patchModule)
 
                         DWORD protect;
                         if (VirtualProtect(&thunk->u1.Function, sizeof(thunk->u1.Function), PAGE_EXECUTE_READWRITE, &protect)) {
-                            thunk->u1.Function = (DWORD_PTR)replacement;
+                            thunk->u1.Function = reinterpret_cast<uintptr_t>(replacement);
                             if (VirtualProtect(&thunk->u1.Function, sizeof(thunk->u1.Function), protect, &protect)) {
 #ifdef PRINTHOOKINFO
                                 if (!IS_ORDINAL(importname)) {
@@ -871,7 +871,7 @@ VOID RestoreImport (HMODULE importmodule, moduleentry_t* module)
                     // be write-protected, so we must first ensure that it is writable.
                     DWORD protect;
                     if (VirtualProtect(&iate->u1.Function, sizeof(iate->u1.Function), PAGE_EXECUTE_READWRITE, &protect)) {
-                        iate->u1.Function = (DWORD_PTR)original;
+                        iate->u1.Function = reinterpret_cast<uintptr_t>(original);
                         if (VirtualProtect(&iate->u1.Function, sizeof(iate->u1.Function), protect, &protect)) {
 #ifdef PRINTHOOKINFO
                             if (!IS_ORDINAL(importname)) {
