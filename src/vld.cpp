@@ -2757,7 +2757,7 @@ void VisualLeakDetector::setupReporting()
         }
         else if (m_reportFile) {
             fwrite(&bom, sizeof(WCHAR), 1, m_reportFile);
-            SetReportEncoding(unicode);
+            SetReportEncoding(encoding_e::unicode);
         }
     }
     else {
@@ -2767,7 +2767,7 @@ void VisualLeakDetector::setupReporting()
             m_reportFile = NULL;
         }
         else if (m_reportFile) {
-            SetReportEncoding(ascii);
+            SetReportEncoding(encoding_e::ascii);
         }
     }
     if (m_reportFile == NULL) {

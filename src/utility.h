@@ -102,7 +102,7 @@ struct context_t
 #define HEXDUMPLINELENGTH      58
 
 // Reports can be encoded as either ASCII or Unicode (UTF-16).
-enum encoding_e {
+enum class encoding_e {
     ascii,
     unicode
 };

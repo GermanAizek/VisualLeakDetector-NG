@@ -41,7 +41,7 @@ static BOOL         s_reportDelay = FALSE;     // If TRUE, we sleep for a bit af
 static FILE        *s_reportFile = NULL;       // Pointer to the file, if any, to send the memory leak report to.
 static BOOL         s_reportToDebugger = TRUE; // If TRUE, a copy of the memory leak report will be sent to the debugger for display.
 static BOOL         s_reportToStdOut = TRUE;   // If TRUE, a copy of the memory leak report will be sent to standard output.
-static encoding_e   s_reportEncoding = ascii;  // Output encoding of the memory leak report.
+static encoding_e   s_reportEncoding = encoding_e::ascii;  // Output encoding of the memory leak report.
 
 #define IS_ORDINAL(name) (((UINT_PTR)name & 0xFFFF) == ((UINT_PTR)name))
 
@@ -704,7 +704,7 @@ VOID Print (LPWSTR messagew)
     int hook_retval=0;
     if (!CallReportHook(0, messagew, &hook_retval))
     {
-        if (s_reportEncoding == unicode) {
+        if (s_reportEncoding == encoding_e::unicode) {
             if (s_reportFile != NULL) {
                 // Send the report to the previously specified file.
                 fwrite(messagew, sizeof(WCHAR), wcslen(messagew), s_reportFile);
@@ -938,8 +938,8 @@ VOID RestoreModule (HMODULE importmodule, moduleentry_t patchtable [], UINT tabl
 VOID SetReportEncoding (encoding_e encoding)
 {
     switch (encoding) {
-    case ascii:
-    case unicode:
+    case encoding_e::ascii:
+    case encoding_e::unicode:
         s_reportEncoding = encoding;
         break;
 
