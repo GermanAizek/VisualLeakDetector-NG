@@ -23,7 +23,7 @@ public:
 	// enter the section
 	void Enter()
 	{
-		ULONG_PTR ownerThreadId = (ULONG_PTR)m_critRegion.OwningThread;
+		ULONG_PTR ownerThreadId = HandleToUlong(m_critRegion.OwningThread);
 		UNREFERENCED_PARAMETER(ownerThreadId);
 		EnterCriticalSection(&m_critRegion);
 	}
