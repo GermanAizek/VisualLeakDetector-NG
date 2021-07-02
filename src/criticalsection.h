@@ -37,7 +37,11 @@ public:
 	{
 		if (m_critRegion.OwningThread == NULL)
 			return false;
-		HANDLE ownerThreadId = (HANDLE)GetCurrentThreadId();
+#ifdef _WIN64
+        HANDLE ownerThreadId = UlongToHandle(GetCurrentThreadId());
+#else
+        HANDLE ownerThreadId = reinterpret_cast<HANDLE>(GetCurrentThreadId());
+#endif
 		return m_critRegion.OwningThread == ownerThreadId;
 	}
 
