@@ -206,7 +206,11 @@ BOOL NtDllPatch(const PBYTE pReturnAddress, NTDLL_LDR_PATCH &NtDllPatch)
                 if ((*(LPDWORD)icall & 0x000D8B4C) == 0x000D8B4C) {
                     // From Windows 10 (1607) calls to the EntryPoint are dispatched through
                     // __guard_dispatch_icall_fptr. In such case correct the relative address.
-                    DWORD fptr = *(LPDWORD)(icall + 3) + (3 /*instruction size*/ + sizeof(DWORD)) - (DWORD)(NtDllPatch.pDetourAddress - NtDllPatch.pPatchAddress);
+
+                    // BUG: Maybe this bug on Win64
+                    // OLD: DWORD fptr = *(LPDWORD)(icall + 3) + (3 /*instruction size*/ + sizeof(DWORD)) - (DWORD)(NtDllPatch.pDetourAddress - NtDllPatch.pPatchAddress);
+                    // memsize + memsize - (DWORD)(PBYTE - PBYTE) ========================================================> [memsize -> 32-bit integer -> memsize]
+                    DWORD fptr = *(LPDWORD)(icall + 3) + (3 /*instruction size*/ + sizeof(DWORD)) - static_cast<uintptr_t>(NtDllPatch.pDetourAddress - NtDllPatch.pPatchAddress);
                     memcpy(NtDllPatch.pDetourAddress + nParamSize - sizeof(DWORD), &fptr, sizeof(DWORD));
 
                     // Additionally in such case the EntryPoint is held in another register
