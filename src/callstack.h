@@ -29,7 +29,6 @@
     Applications should never include this header."
 #endif
 
-#include <windows.h>
 #include "utility.h"
 
 #define CALLSTACK_CHUNK_SIZE    32	// Number of frame slots in each CallStack chunk.

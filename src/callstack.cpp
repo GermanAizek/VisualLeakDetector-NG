@@ -397,7 +397,7 @@ int CallStack::resolve(BOOL showInternalFrames)
     const size_t allocedBytes = m_resolvedCapacity * sizeof(WCHAR);
     m_resolved = new WCHAR[m_resolvedCapacity];
     if (m_resolved) {
-        ZeroMemory(m_resolved, allocedBytes);
+        memset(m_resolved, 0, allocedBytes);
     }
 
     // Iterate through each frame in the call stack.
@@ -666,27 +666,27 @@ VOID FastCallStack::getStackTrace (UINT32 maxdepth, const context_t& context)
     }
 #elif defined(_M_X64)*/
     UINT32 maxframes = min(62, maxdepth + 10);
-    UINT_PTR* myFrames = new UINT_PTR[maxframes];
-    ZeroMemory(myFrames, sizeof(UINT_PTR) * maxframes);
+    auto myFrames = std::unique_ptr<UINT_PTR>(new UINT_PTR[maxframes]);
+    auto* rawPtr = myFrames.get();
+    memset(rawPtr, 0, sizeof(UINT_PTR) * maxframes);
     ULONG BackTraceHash;
-    maxframes = RtlCaptureStackBackTrace(0, maxframes, reinterpret_cast<PVOID*>(myFrames), &BackTraceHash);
+    maxframes = RtlCaptureStackBackTrace(0, maxframes, reinterpret_cast<PVOID*>(rawPtr), &BackTraceHash);
     m_hashValue = BackTraceHash;
     UINT32  startIndex = 0;
     while (count < maxframes) {
-        if (myFrames[count] == 0)
+        if (rawPtr[count] == 0)
             break;
-        if (myFrames[count] == context.fp)
+        if (rawPtr[count] == context.fp)
             startIndex = count;
         count++;
     }
     count = startIndex;
     while (count < maxframes) {
-        if (myFrames[count] == 0)
+        if (rawPtr[count] == 0)
             break;
-        push_back(myFrames[count]);
+        push_back(rawPtr[count]);
         count++;
     }
-    delete [] myFrames;
 //#endif
 }
 

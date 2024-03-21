@@ -30,8 +30,12 @@ Applications should never include this header."
 #endif
 
 #include <cstdio>
-#include <windows.h>
 #include <intrin.h>
+#include <memory>
+#include <algorithm>
+
+#define NOMINMAX
+#include <windows.h>
 
 #ifdef _WIN64
 #define ADDRESSFORMAT       L"0x%.16X"   // Format string for 64-bit addresses
