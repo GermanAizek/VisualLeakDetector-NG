@@ -24,7 +24,7 @@ permissions:
   contents: read
 
 jobs:
-  buildvs14:
+  build_vs14:
     runs-on: windows-latest
 
     steps:
@@ -35,7 +35,7 @@ jobs:
 
     - name: Restore NuGet packages
       working-directory: ${{env.GITHUB_WORKSPACE}}
-      run: nuget restore vld_vs14_wo_mfc.sln -MSBuildVersion 14
+      run: nuget restore vld_vs14_wo_mfc.sln
 
     - name: Building on VS14
       working-directory: ${{env.GITHUB_WORKSPACE}}
@@ -43,7 +43,7 @@ jobs:
       # See https://docs.microsoft.com/visualstudio/msbuild/msbuild-command-line-reference
       run: msbuild vld_vs14_wo_mfc.sln /m /p:Configuration=${{env.BUILD_CONFIGURATION}}
 
-  buildvs16:
+  build_vs16:
     runs-on: windows-latest
 
     steps:
@@ -54,7 +54,7 @@ jobs:
 
     - name: Restore NuGet packages
       working-directory: ${{env.GITHUB_WORKSPACE}}
-      run: nuget restore vld_vs16.sln -MSBuildVersion 16
+      run: nuget restore vld_vs16.sln
 
     - name: Building on VS16
       working-directory: ${{env.GITHUB_WORKSPACE}}
